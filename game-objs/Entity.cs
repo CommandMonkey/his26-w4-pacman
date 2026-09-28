@@ -1,0 +1,50 @@
+﻿using SFML.Graphics;
+using SFML.System;
+
+namespace pacman;
+
+public class Entity
+{
+    private string textureName;
+    protected Sprite sprite;
+    public bool Dead;
+
+    public virtual Vector2f Position
+    {
+        get => sprite.Position;
+        set => sprite.Position = value;
+    }
+    
+    public virtual FloatRect Bounds => sprite.GetGlobalBounds();
+    public virtual bool Solid => false;
+
+    public Entity(string textureName)
+    {
+        this.textureName = textureName;
+    }
+
+    public virtual void Create(Scene scene)
+    {
+        // TODO: Implement
+    }
+    
+    public virtual void Destroy(Scene scene) {}
+
+    public virtual void Update(Scene scene, float deltaTime)
+    {
+        foreach (Entity found in scene.FindIntersects(Bounds))
+        {
+            CollideWith(scene, found);
+        }
+    }
+
+    public virtual void Render(RenderTarget target)
+    {
+        // TODO: Implement
+    }
+
+    protected virtual void CollideWith(Scene scene, Entity other)
+    {
+        // no-op
+    }
+}

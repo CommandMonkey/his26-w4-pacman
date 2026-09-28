@@ -8,6 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="maps\maze.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </EmbeddedResource>
     <None Remove="assets/*.txt" />
     <EmbeddedResource Include="assets/*.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

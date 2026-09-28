@@ -16,7 +16,6 @@ namespace pacman
         
         // Misc.
         private static Clock dtClock;
-        // public static Font futureFont = new Font("assets/future.ttf");
         
         static void Main(string[] args)
         {
