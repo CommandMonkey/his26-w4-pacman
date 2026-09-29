@@ -6,23 +6,22 @@ namespace pacman;
 public class SceneLoader
 {
     public static readonly string MapPath = "maps";
-    private string mapFile;
     
     private readonly Dictionary<char, Func<Entity>> loaders;
     private string currentScene = "";
     private string nextScene = "";
 
-    public SceneLoader(string mapFile)
+    public SceneLoader()
     {
-        this.mapFile = mapFile; 
-        
         loaders = new Dictionary<char, Func<Entity>>
         {
             {'#', () => new Wall()},
             {'.', () => new Coin()},
             {'c', () => new Candy()},
+            /*
             {'p', () => new Pacman()},
             {'g', () => new Ghost()}
+            */
         };
     }
 
@@ -42,10 +41,11 @@ public class SceneLoader
     {
         // Clear current scene
         if (nextScene == "") return;
+        
         scene.Clear();
         
         // Parse file
-        string path = $"{MapPath}/{mapFile}";
+        string path = $"{MapPath}/{nextScene}";
         if (File.Exists(path)) // Source: https://learn.microsoft.com/en-us/dotnet/api/system.io.file.exists?view=net-10.0
         {
             string[] lines = File.ReadAllLines(path, Encoding.UTF8);
@@ -67,4 +67,8 @@ public class SceneLoader
         currentScene = nextScene;
         nextScene = "";
     }
+
+    public void Load(string sceneName) => nextScene = sceneName;
+
+    public void Reload() => nextScene = currentScene;
 }

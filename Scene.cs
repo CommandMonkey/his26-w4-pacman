@@ -11,31 +11,44 @@ public class Scene
     public Scene()
     {
         entities = new List<Entity>();
+        Loader = new SceneLoader();
+        Assets = new AssetManager();
     }
 
     public void Spawn(Entity entity)
     {
-        // TODO: Implement
+        entities.Add(entity);
+        entity.Create(this);
     }
 
     public void Clear()
     {
         for (int i = entities.Count - 1; i >= 0; i--)
         {
-            Entity entity = entities[i];
+            entities[i].Destroy(this);
             entities.RemoveAt(i);
-            entity.Destroy(this);
         }
     }
 
     public void UpdateAll(float deltaTime)
     {
-        // TODO: Implement
+        Loader.HandleSceneLoad(this);
+        
+        for (int i = entities.Count - 1; i >= 0; i--)
+        {
+            if (entities[i].Dead)
+                entities.RemoveAt(i);
+            else
+                entities[i].Update(this, deltaTime);
+        }
     }
 
     public void RenderAll(RenderTarget target)
     {
-        // TODO: Implement
+        foreach (Entity entity in entities)
+        {
+            entity.Render(target);
+        }
     }
 
     public bool FindByType<T>(out T found) where T : Entity

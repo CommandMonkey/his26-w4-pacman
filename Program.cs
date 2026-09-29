@@ -7,12 +7,15 @@ namespace pacman
     class Program
     {
         // Screen properties
-        private const float defScreenW = 800;
-        private const float defScreenH = 600;
+        private const float defScreenW = 828;
+        private const float defScreenH = 900;
         public static uint screenW = (uint)defScreenW;
         public static uint screenH = (uint)defScreenH;
-        private static Vector2f viewPos = new Vector2f(defScreenW/4, defScreenH/4);
+        private static Vector2f viewPos = new Vector2f((defScreenW/4)+18, defScreenH/4); //+18 since tutorial wants offset by one tile
         public static Vector2f viewSize = new Vector2f(defScreenW/2, defScreenH/2);
+        
+        // Game stuff
+        private static Scene scene = new Scene();
         
         // Misc.
         private static Clock dtClock;
@@ -40,6 +43,9 @@ namespace pacman
                 // Instantiate setup objects
                 dtClock = new Clock();
                 
+                // Game stuff
+                scene.Loader.Load("maze.txt");
+                
                 // Main Loop
                 while (window.IsOpen)
                 {
@@ -53,7 +59,7 @@ namespace pacman
                     Update(deltaTime);
                     
                     // Clear & Fill
-                    window.Clear(new Color(131, 197, 235)); // #83c5eb
+                    window.Clear(new Color(29, 13, 74)); // #1d0d4a
                     
                     // Draw to window
                     Draw(window);
@@ -86,12 +92,12 @@ namespace pacman
 
         static void Update(float deltaTime)
         {
-            
+            scene.UpdateAll(deltaTime);
         }
 
         static void Draw(RenderWindow target)
         {
-            
+            scene.RenderAll(target);
         }
     }
 }

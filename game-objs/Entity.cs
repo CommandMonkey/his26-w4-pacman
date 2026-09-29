@@ -7,6 +7,7 @@ public class Entity
 {
     private string textureName;
     protected Sprite sprite;
+    
     public bool Dead;
 
     public virtual Vector2f Position
@@ -20,18 +21,19 @@ public class Entity
 
     public Entity(string textureName)
     {
+        this.sprite = new Sprite();
         this.textureName = textureName;
     }
 
     public virtual void Create(Scene scene)
     {
-        // TODO: Implement
+        sprite.Texture = scene.Assets.LoadTexture(textureName);
     }
     
     public virtual void Destroy(Scene scene) {}
-
+    
     public virtual void Update(Scene scene, float deltaTime)
-    {
+    {   
         foreach (Entity found in scene.FindIntersects(Bounds))
         {
             CollideWith(scene, found);
@@ -40,7 +42,7 @@ public class Entity
 
     public virtual void Render(RenderTarget target)
     {
-        // TODO: Implement
+        target.Draw(sprite);
     }
 
     protected virtual void CollideWith(Scene scene, Entity other)
