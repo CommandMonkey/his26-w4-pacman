@@ -8,7 +8,7 @@ public class Entity
     private string textureName;
     protected Sprite sprite;
     
-    public bool Dead;
+    public bool Dead = false;
 
     public virtual Vector2f Position
     {

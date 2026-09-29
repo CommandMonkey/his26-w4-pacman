@@ -6,7 +6,7 @@ public class Coin : Entity
 {
     public Coin() : base("pacman") {} // "pacman" is our texture name "pacman.txt"
 
-    public override bool Solid => true;
+    public override bool Solid => false;
 
     public override void Create(Scene scene)
     {

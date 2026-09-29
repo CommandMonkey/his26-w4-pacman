@@ -76,4 +76,23 @@ public class Scene
                 yield return entity; // Yield pauses here after returning, i.e FindIntersects intenral for loop is resumed next time this is called, so it dosen't have to iterate the same already-checked entities again. (avoids returning true for the same entity every time this is called) 
         }
     }
+
+    public void DrawSortEntities()
+    {
+        // Order by rendering order so walls are rendered first
+        // LINQ OrderBy Source: https://learn.microsoft.com/en-us/dotnet/api/system.linq.enumerable.orderby?view=net-10.0
+        entities = entities.OrderBy(
+            // Shorthand switchcase with "_" for default, just like in the tutorials
+            e => e switch {
+                // Implicit type comparison against e
+                Wall => 0, // First in order, meaning will be rendered first (at bottom)
+                Coin => 1,
+                Candy => 2,
+                Ghost => 3,
+                Pacman => 4,
+                GUI => 5,
+                _ => -1 // Default    
+            }
+        ).ToList();
+    }
 }

@@ -18,10 +18,8 @@ public class SceneLoader
             {'#', () => new Wall()},
             {'.', () => new Coin()},
             {'c', () => new Candy()},
-            /*
             {'p', () => new Pacman()},
             {'g', () => new Ghost()}
-            */
         };
     }
 
@@ -62,6 +60,12 @@ public class SceneLoader
                 }
             }
         }
+        
+        // Add GUI
+        scene.Spawn(new GUI());
+        
+        // Sort per drawing order in the scene
+        scene.DrawSortEntities();
 
         // Change scene
         currentScene = nextScene;
