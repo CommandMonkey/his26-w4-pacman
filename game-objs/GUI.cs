@@ -19,9 +19,24 @@ public class GUI : Entity
 
     public override bool Solid => false;
 
+    private void OnLoseHealth(Scene scene, int amount)
+    {
+        currentHealth -= amount;
+        if (currentHealth <= 0)
+            scene.Loader.Reload();
+    }
+
+    private void OnGainScore(Scene scene, int amount)
+    {
+        currentScore += amount;
+    }
+    
     public override void Create(Scene scene)
     {
         base.Create(scene);
+
+        scene.LoseHealth += OnLoseHealth;
+        scene.GainScore += OnGainScore;
         
         sprite.TextureRect = new IntRect(72, 36, 18, 18); // Heart Full
         sprite.Scale *= 2;
@@ -29,6 +44,13 @@ public class GUI : Entity
         scoreText.Font = scene.Assets.LoadFont("pixel-font");
         scoreText.DisplayedString = "Score";
         currentHealth = maxHealth;
+    }
+
+    public override void Destroy(Scene scene)
+    {
+        base.Destroy(scene);
+        scene.LoseHealth += OnLoseHealth;
+        scene.GainScore += OnGainScore;
     }
 
     public override void Update(Scene scene, float deltaTime)
@@ -54,7 +76,7 @@ public class GUI : Entity
             base.Render(target);
             sprite.Position += new Vector2f(18 * 2, 0);
         }
-
+        
         scoreText.DisplayedString = $"Score: {currentScore}";
         scoreText.Position = new Vector2f(
             414 - scoreText.GetGlobalBounds().Width, 396 // Right aligned text

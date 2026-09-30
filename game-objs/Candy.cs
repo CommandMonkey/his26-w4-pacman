@@ -6,8 +6,6 @@ public class Candy : Entity
 {
     public Candy() : base("pacman") {} // "pacman" is our texture name "pacman.txt"
 
-    public override bool Solid => false;
-
     public override void Create(Scene scene)
     {
         base.Create(scene);

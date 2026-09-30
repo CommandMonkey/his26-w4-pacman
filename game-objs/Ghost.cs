@@ -49,4 +49,13 @@ public class Ghost : Actor
         int randIdx = new Random().Next(0, validMoves.Count);
         return validMoves[randIdx];
     }
+
+    protected override void CollideWith(Scene scene, Entity e)
+    {
+        if (e is Pacman)
+        {
+            scene.PublishLoseHealth(1);
+            Reset();
+        }
+    }
 }

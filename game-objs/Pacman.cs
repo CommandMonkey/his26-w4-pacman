@@ -30,10 +30,23 @@ public class Pacman : Actor
         // no-op
     }
 
+    private void OnLoseHealth(Scene scene, int amount)
+    {
+        Reset();
+    }
+
     public override void Create(Scene scene)
     {
         speed = 100.0f;
         base.Create(scene);
+
+        scene.LoseHealth += OnLoseHealth;
+    }
+
+    public override void Destroy(Scene scene)
+    {
+        scene.LoseHealth -= OnLoseHealth;
+        base.Destroy(scene);
     }
 
     protected override int PickDirection(Scene scene)
