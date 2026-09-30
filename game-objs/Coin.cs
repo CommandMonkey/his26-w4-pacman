@@ -16,7 +16,7 @@ public class Coin : Entity
 
     public override void Update(Scene scene, float deltaTime)
     {
-        // no-op
+        base.Update(scene, deltaTime);
     }
     
     protected override void CollideWith(Scene scene, Entity e)

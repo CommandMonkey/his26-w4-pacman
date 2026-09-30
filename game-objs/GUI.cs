@@ -22,6 +22,7 @@ public class GUI : Entity
     private void OnLoseHealth(Scene scene, int amount)
     {
         currentHealth -= amount;
+        
         if (currentHealth <= 0)
             scene.Loader.Reload();
     }
@@ -49,8 +50,8 @@ public class GUI : Entity
     public override void Destroy(Scene scene)
     {
         base.Destroy(scene);
-        scene.LoseHealth += OnLoseHealth;
-        scene.GainScore += OnGainScore;
+        scene.LoseHealth -= OnLoseHealth;
+        scene.GainScore -= OnGainScore;
     }
 
     public override void Update(Scene scene, float deltaTime)
@@ -71,7 +72,7 @@ public class GUI : Entity
         {
             sprite.TextureRect = i < currentHealth
                 ? new IntRect(72, 36, 18, 18) // Full Heart
-                : new IntRect(72, 9, 18, 18); // Empty Heart
+                : new IntRect(72, 0, 18, 18); // Empty Heart
             
             base.Render(target);
             sprite.Position += new Vector2f(18 * 2, 0);

@@ -61,8 +61,8 @@ public class Actor : Entity
     protected void Reset()
     {
         wasAligned = false;
-        originalPosition = Position;
-        originalSpeed = speed;
+        Position = originalPosition;
+        speed = originalSpeed;
     }
 
     protected bool IsFree(Scene scene, int direction) // Direction works like an enum
@@ -105,6 +105,9 @@ public class Actor : Entity
     public override void Create(Scene scene)
     {
         base.Create(scene);
+
+        originalPosition = Position;
+        originalSpeed = speed;
         
         Reset();
         
