@@ -62,7 +62,8 @@ public sealed class SceneLoader
         }
         
         // Add GUI
-        scene.Spawn(new GUI());
+        if (!scene.FindByType<GUI>(out _))
+            scene.Spawn(new GUI());
         
         // Sort per drawing order in the scene
         scene.DrawSortEntities();

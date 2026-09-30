@@ -27,7 +27,13 @@ namespace pacman
             )
             {
                 // Setup event handlers
-                window.Closed += (o, e) => window.Close(); // o: The object that triggered the event (sender);  e: the event data containing ex. what happened
+                window.Closed += (o, e) => // o: The object that triggered the event (sender);  e: the event data containing ex. what happened
+                {
+                    if (scene.FindByType<GUI>(out GUI gui))
+                        gui.SaveHighScore();
+                    
+                    window.Close();
+                };
                 
                 window.Resized += (o, e) =>
                 {

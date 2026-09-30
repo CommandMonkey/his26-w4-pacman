@@ -18,6 +18,7 @@ public class Entity
     
     public virtual FloatRect Bounds => sprite.GetGlobalBounds();
     public virtual bool Solid => false;
+    public bool DontDestroyOnLoad = false;
 
     public Entity(string textureName)
     {

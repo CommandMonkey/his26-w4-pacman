@@ -40,12 +40,12 @@ public class Pacman : Actor
         speed = 100.0f;
         base.Create(scene);
 
-        scene.LoseHealth += OnLoseHealth;
+        scene.Events.LoseHealth += OnLoseHealth;
     }
 
     public override void Destroy(Scene scene)
-    {
-        scene.LoseHealth -= OnLoseHealth;
+    {       
+        scene.Events.LoseHealth -= OnLoseHealth;
         base.Destroy(scene);
     }
 

@@ -2,36 +2,20 @@
 
 namespace pacman;
 
-public delegate void ValueChangedEvent(Scene scene, int value);
 
 public sealed class Scene
 {
-    
     private List<Entity> entities;
     public readonly SceneLoader Loader;
     public readonly AssetManager Assets;
-    
-    public event ValueChangedEvent GainScore;
-    public event ValueChangedEvent LoseHealth;
-
-    private int scoreGained;
-    private int healthLost;
+    public readonly EventManager Events;
 
     public Scene()
     {
         entities = new List<Entity>();
         Loader = new SceneLoader();
         Assets = new AssetManager();
-    }
-
-    public void PublishGainScore(int amount)
-    {
-        scoreGained += amount;
-    }
-
-    public void PublishLoseHealth(int amount)
-    {
-        healthLost += amount;
+        Events = new EventManager();
     }
 
     public void Spawn(Entity entity)
@@ -42,10 +26,16 @@ public sealed class Scene
 
     public void Clear()
     {
+        Entity entity;
+        
         for (int i = entities.Count - 1; i >= 0; i--)
         {
-            entities[i].Destroy(this);
-            entities.RemoveAt(i);
+            entity = entities[i];
+            if (!entity.DontDestroyOnLoad)
+            {
+                entity.Destroy(this);
+                entities.RemoveAt(i);
+            }
         }
     }
 
@@ -60,19 +50,8 @@ public sealed class Scene
             else
                 entities[i].Update(this, deltaTime);
         }
-
-        // Event gainers
-        if (scoreGained != 0)
-        {
-            GainScore?.Invoke(this, scoreGained);
-            scoreGained = 0;
-        }
-
-        if (healthLost != 0)
-        {
-            LoseHealth?.Invoke(this, healthLost);
-            healthLost = 0;
-        }
+        
+        Events.Update(this);
     }
 
     public void RenderAll(RenderTarget target)

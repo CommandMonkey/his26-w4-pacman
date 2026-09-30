@@ -17,18 +17,41 @@ public class Ghost : Actor
         }
     };
 
+    private float frozenTimer;
+    
     public Ghost() : base("pacman") // "pacman" is our texture name "pacman.txt"
     {
         // no-op
     }
 
+    private void OnEatCandy(Scene scene, int amount)
+    {
+        frozenTimer = 5.0f;
+    }
+    
     public override void Create(Scene scene)
     {
         direction = -1; // No direction
         speed = 100.0f;
         moving = true;
+
+        scene.Events.EatenCandy += OnEatCandy;
         
         base.Create(scene);
+    }
+
+    public override void Destroy(Scene scene)
+    {
+        scene.Events.EatenCandy -= OnEatCandy;
+        base.Destroy(scene);
+    }
+
+    public override void Update(Scene scene, float deltaTime)
+    {
+        frozenTimer = MathF.Max(frozenTimer - deltaTime, 0.0f);
+        stateIdx = frozenTimer > 0.0f ? 1 : 0;
+        
+        base.Update(scene, deltaTime);
     }
 
     protected override int PickDirection(Scene scene)
@@ -54,7 +77,8 @@ public class Ghost : Actor
     {
         if (e is Pacman)
         {
-            scene.PublishLoseHealth(1);
+            if (frozenTimer <= 0)
+                scene.Events.PublishLoseHealth(1);
             Reset();
         }
     }
