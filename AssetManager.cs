@@ -2,7 +2,7 @@
 
 namespace pacman;
 
-public class AssetManager
+public sealed class AssetManager
 {
     public static readonly string AssetPath = "assets";
 

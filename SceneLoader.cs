@@ -3,7 +3,7 @@ using SFML.System;
 
 namespace pacman;
 
-public class SceneLoader
+public sealed class SceneLoader
 {
     public static readonly string MapPath = "maps";
     

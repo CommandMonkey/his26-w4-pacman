@@ -2,7 +2,7 @@
 
 namespace pacman;
 
-public class Scene
+public sealed class Scene
 {
     private List<Entity> entities;
     public readonly SceneLoader Loader;
