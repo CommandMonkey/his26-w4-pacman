@@ -1,0 +1,21 @@
+|#######################            |
+|#                     #            |
+|#                     #            |
+##                     ### ##########
+|                        # #gggggggg#
+|                        # #gggggggg#
+|                        # #gggggggg#
+|                        # #gggggggg#
+|         ccccc          # #gggggggg#
+|         ccccc          # #gggggggg#
+|         ccpcc          # #gggggggg#
+|         ccccc          # #gggggggg#
+|         ccccc          # #gggggggg#
+|                        # #gggggggg#
+|                        # #gggggggg#
+|                        # #gggggggg#
+|                        # #gggggggg#
+##                     ### ##########
+|#                     #            |
+|#                     #            |
+|#######################            |
