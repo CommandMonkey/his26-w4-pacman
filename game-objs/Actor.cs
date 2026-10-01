@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel;
+using System.Numerics;
 using SFML.Graphics;
 using SFML.System;
 
@@ -22,12 +23,20 @@ public class Actor : Entity
     private float graceTimer = 0.0f;
     public bool isGraced => graceTimer > 0.0f;
 
-    public bool wasAligned; //TODO: private
+    private bool wasAligned; //TODO: private
     protected float speed;
     protected int direction = -1; // To avoid the int-default-value "0" which is mapped to right
     protected bool moving;
     protected Vector2f originalPosition;
     protected float originalSpeed;
+
+    public override FloatRect Bounds =>
+        new FloatRect(
+            sprite.Position.X + 3, 
+            sprite.Position.Y + 3, 
+            sprite.GetGlobalBounds().Width - 6, 
+            sprite.GetGlobalBounds().Height - 6
+            );
 
     protected bool IsAligned => (int)MathF.Floor(Position.X) % 18 == 0 && 
                                 (int)MathF.Floor(Position.Y) % 18 == 0;
@@ -72,7 +81,7 @@ public class Actor : Entity
 
     protected bool IsFree(Scene scene, int direction) // Direction works like an enum
     {
-        Vector2f at = Position + new Vector2f(9, 9); // We use 9,9 to center, since tileSize is 18x18
+        Vector2f at = Position + new Vector2f(Bounds.Width/2, Bounds.Height/2); // We use the middle of the bounds to find the center of the sprite, since the bounds are smaller than the sprite (It feels better)
         at += 18 * ToVector(direction);
         FloatRect rect = new FloatRect(at.X, at.Y, 1, 1);
         return !scene.FindIntersects(rect).Any(e => e.Solid);
@@ -136,7 +145,6 @@ public class Actor : Entity
         }
 
         // Move until aligned
-        Console.WriteLine(IsAligned);
         if (IsAligned)
         {
             if (!wasAligned)

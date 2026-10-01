@@ -18,6 +18,9 @@ namespace pacman
         private static Scene scene = new Scene();
         
         // Misc.
+        private static bool gamePaused = false;
+        public static bool GamePaused => gamePaused;
+        
         private static Clock dtClock;
         
         static void Main(string[] args)
@@ -28,10 +31,7 @@ namespace pacman
             {
                 // Setup event handlers
                 window.Closed += (o, e) => // o: The object that triggered the event (sender);  e: the event data containing ex. what happened
-                {
-                    if (scene.FindByType<GUI>(out GUI gui))
-                        gui.SaveHighScore();
-                    
+                {   
                     window.Close();
                 };
                 
@@ -75,6 +75,18 @@ namespace pacman
                 }
             }
         }
+
+        public static void QueueReload(bool pauseGame = false)
+        {
+            if (!pauseGame)
+            {
+                scene.Loader.Reload();
+            }
+            else
+            {
+                gamePaused = true;
+            }
+        }
         
         private static void UpdateView(RenderTarget window)
         {
@@ -99,6 +111,12 @@ namespace pacman
         static void Update(float deltaTime)
         {
             if (deltaTime > 0.1f) deltaTime = 0.1f;
+
+            if (gamePaused && Keyboard.IsKeyPressed(Keyboard.Key.Space))
+            {
+                gamePaused = false;
+                QueueReload();   
+            }
             
             scene.UpdateAll(deltaTime);
         }

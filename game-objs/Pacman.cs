@@ -61,11 +61,11 @@ public class Pacman : Actor
 
     protected override void Reset()
     {
-        Console.WriteLine($"A  IsAligned: {IsAligned}; wasAligned: {wasAligned}; dir: {direction}; mov: {moving}");
         base.Reset();
+        
+        // Movement fix
         moving = false;
         direction = 0;
-        Console.WriteLine($"   IsAligned: {IsAligned}; wasAligned: {wasAligned}; dir: {direction}; mov: {moving}");
     }
 
     protected override int PickDirection(Scene scene)

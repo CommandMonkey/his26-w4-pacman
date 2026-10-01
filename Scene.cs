@@ -42,13 +42,21 @@ public sealed class Scene
     public void UpdateAll(float deltaTime)
     {
         Loader.HandleSceneLoad(this);
-        
+
+        Entity entity;
         for (int i = entities.Count - 1; i >= 0; i--)
         {
-            if (entities[i].Dead)
+            entity = entities[i];
+            
+            if (entity.Dead)
+            {
                 entities.RemoveAt(i);
+            }
             else
-                entities[i].Update(this, deltaTime);
+            {
+                if (!Program.GamePaused || (Program.GamePaused && entity.RenderOnPause))
+                    entity.Update(this, deltaTime);
+            }
         }
         
         Events.Update(this);
@@ -58,7 +66,8 @@ public sealed class Scene
     {
         foreach (Entity entity in entities)
         {
-            entity.Render(target);
+            if (!Program.GamePaused || (Program.GamePaused && entity.RenderOnPause))
+                entity.Render(target);
         }
     }
 
