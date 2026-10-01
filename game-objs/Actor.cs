@@ -19,9 +19,12 @@ public class Actor : Entity
     private float animTimer = 0.0f;
     public virtual float delayMs => 200.0f;
 
-    private bool wasAligned;
+    private float graceTimer = 0.0f;
+    public bool isGraced => graceTimer > 0.0f;
+
+    public bool wasAligned; //TODO: private
     protected float speed;
-    protected int direction;
+    protected int direction = -1; // To avoid the int-default-value "0" which is mapped to right
     protected bool moving;
     protected Vector2f originalPosition;
     protected float originalSpeed;
@@ -58,8 +61,10 @@ public class Actor : Entity
         }
     }
 
-    protected void Reset()
+    protected virtual void Reset()
     {
+        graceTimer = 1.0f; // Also works as a on-game-start grace timer
+        
         wasAligned = false;
         Position = originalPosition;
         speed = originalSpeed;
@@ -99,7 +104,7 @@ public class Actor : Entity
 
     protected virtual int PickDirection(Scene scene)
     {
-        return 0;
+        return -1;
     }
     
     public override void Create(Scene scene)
@@ -118,6 +123,17 @@ public class Actor : Entity
     public override void Update(Scene scene, float deltaTime)
     {   
         base.Update(scene, deltaTime);
+        
+        // Invincible Timer
+        if (isGraced)
+        {
+            graceTimer -= deltaTime;
+            sprite.Color = new Color(255, 255, 255, 128);
+        }
+        else
+        {
+            sprite.Color = new Color(255, 255, 255, 255);
+        }
 
         // Move until aligned
         if (IsAligned)
@@ -136,9 +152,11 @@ public class Actor : Entity
         // Animate call incase PickDirection changed stateIdx
         Animate(deltaTime);
         
-        // Handle wraparound
-        if (!moving) return;
+        // Movement
+        if (!moving || isGraced) return;
         Position += ToVector(direction) * (speed * deltaTime);
+        
+        // Handle wrap-around
         switch (MathF.Floor(Position.X))
         {
             // 432 = (ScreenW / 2) + 18

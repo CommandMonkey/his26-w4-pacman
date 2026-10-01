@@ -31,7 +31,6 @@ public class Ghost : Actor
     
     public override void Create(Scene scene)
     {
-        direction = -1; // No direction
         speed = 100.0f;
         moving = true;
 
@@ -77,9 +76,12 @@ public class Ghost : Actor
     {
         if (e is Pacman)
         {
-            if (frozenTimer <= 0)
+            if (frozenTimer <= 0 && !((Actor)e).isGraced)
                 scene.Events.PublishLoseHealth(1);
-            Reset();
+            
+            // Frozen is already checked so this on blue-state pacman-collide
+            if (!this.isGraced)
+                Reset();
         }
     }
 }

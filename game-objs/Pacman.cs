@@ -1,27 +1,37 @@
 ﻿using SFML.Graphics;
+using SFML.System;
 using SFML.Window;
 
 namespace pacman;
 
 public class Pacman : Actor
 {
-    // 2D Array of [ State[Frame:IntRect,...], ... ]        0:RightState[frame1,frame2],  1:UpState[frame1,frame2],  2:LeftState[frame1,frame2],  3:DownState[frame1,frame2]
+    // 2D Array of [ State[Frame:IntRect,...], ... ]
     public override IntRect[][] texturePositions => new [] {
+        // 0 : RightState
         new [] {
             new IntRect(0, 0, 18, 18),
             new IntRect(18, 0, 18, 18)
         },
+        // 1 : UpState
         new [] {
             new IntRect(0, 18, 18, 18),
             new IntRect(18, 18, 18, 18)
         },
+        // 2 : LeftState
         new [] {
             new IntRect(0, 18*2, 18, 18),
             new IntRect(18, 18*2, 18, 18)
         },
+        // 3 : DownState
         new [] {
             new IntRect(0, 18*3, 18, 18),
             new IntRect(18, 18*3, 18, 18)
+        },
+        // 4 : NotMovingState
+        new []
+        {
+            new IntRect(18*2, 18*3, 18, 18),
         }
     };
     
@@ -42,11 +52,19 @@ public class Pacman : Actor
 
         scene.Events.LoseHealth += OnLoseHealth;
     }
-
+    
     public override void Destroy(Scene scene)
     {       
         scene.Events.LoseHealth -= OnLoseHealth;
         base.Destroy(scene);
+    }
+
+    protected override void Reset()
+    {
+        Console.WriteLine($"A  IsAligned: {IsAligned}; wasAligned: {wasAligned}; dir: {direction}; mov: {moving}");
+        base.Reset();
+        direction = -1;
+        Console.WriteLine($"   IsAligned: {IsAligned}; wasAligned: {wasAligned}; dir: {direction}; mov: {moving}");
     }
 
     protected override int PickDirection(Scene scene)
@@ -76,13 +94,13 @@ public class Pacman : Actor
         }
         
         // Update state
-        stateIdx = dir; // This works because the texturePositions array is in the same order as the directions-int
+        stateIdx = dir < 0 ? 4 : dir; // This works because the texturePositions array is in the same order as the directions-int
 
         // If not free, don't move
         if (IsFree(scene, dir)) return dir;
         if (!IsFree(scene, direction)) moving = false;
 
-        stateIdx = direction;
+        stateIdx = moving ? direction : 4; // 4 : NotMovingState
         return direction;
     }
 }
