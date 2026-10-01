@@ -16,7 +16,7 @@ public class Actor : Entity
     }
     
     private int frameIdx = 0;
-    private float animTimer = 0.0f;
+    public float animTimer = 0.0f;
     public virtual float delayMs => 200.0f;
 
     private float graceTimer = 0.0f;
@@ -136,6 +136,7 @@ public class Actor : Entity
         }
 
         // Move until aligned
+        Console.WriteLine(IsAligned);
         if (IsAligned)
         {
             if (!wasAligned)

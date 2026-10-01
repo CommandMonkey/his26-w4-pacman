@@ -63,7 +63,8 @@ public class Pacman : Actor
     {
         Console.WriteLine($"A  IsAligned: {IsAligned}; wasAligned: {wasAligned}; dir: {direction}; mov: {moving}");
         base.Reset();
-        direction = -1;
+        moving = false;
+        direction = 0;
         Console.WriteLine($"   IsAligned: {IsAligned}; wasAligned: {wasAligned}; dir: {direction}; mov: {moving}");
     }
 
@@ -92,6 +93,9 @@ public class Pacman : Actor
             dir = 3;
             moving = true;
         }
+        
+        if (dir != direction)
+            animTimer = delayMs;
         
         // Update state
         stateIdx = dir < 0 ? 4 : dir; // This works because the texturePositions array is in the same order as the directions-int

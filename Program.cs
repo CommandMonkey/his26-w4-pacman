@@ -98,7 +98,7 @@ namespace pacman
 
         static void Update(float deltaTime)
         {
-            if (deltaTime > 0.1) deltaTime = 0.1f;
+            if (deltaTime > 0.1f) deltaTime = 0.1f;
             
             scene.UpdateAll(deltaTime);
         }
